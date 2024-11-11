@@ -1,0 +1,49 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+df = pd.read_csv("retail_sales_dataset.csv")
+
+
+df.head()
+
+
+df.tail()
+
+
+df.info()
+
+
+df.describe()
+
+
+df.isnull().sum()
+
+
+relevant_columns = ['Product Category', 'Quantity', 'Total Amount']
+data = df[relevant_columns]
+data
+
+
+region_sales = df.groupby('Product Category')['Total Amount'].sum().reset_index()
+
+
+region_sales = region_sales.sort_values(by='Total Amount', ascending=False)
+
+
+plt.figure(figsize=(10,6))
+plt.bar(region_sales['Product Category'], region_sales['Total Amount'])
+plt.title('Sales Distribution by Category')
+plt.xlabel('Category')
+plt.ylabel('Total Sales Amount')
+plt.show()
+
+
+plt.figure(figsize=(8,8))
+plt.pie(region_sales['Total Amount'], labels=region_sales['Product Category'], autopct='%1.1f%%')
+plt.title('Sales Distribution by Category')
+plt.show()
+
+
+top_regions = region_sales.sort_values('Total Amount', ascending=False)
+print(top_regions)

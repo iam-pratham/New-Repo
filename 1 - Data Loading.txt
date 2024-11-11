@@ -1,0 +1,85 @@
+import numpy as np
+import pandas as pd
+from matplotlib import pyplot as plt
+import json
+import seaborn as sns
+
+
+csv = pd.read_csv("supermarket_sales - Sheet1.csv")
+
+
+ed = pd.read_excel("Superstore.xlsx")
+
+
+json_data = pd.read_json('StoreSales.json', encoding='ISO-8859-1')
+
+CSV
+csv.head()
+
+
+csv.rename(columns={'Total':'SALES'},inplace=True)
+
+
+csv
+
+
+csv.info()
+
+
+csv.describe()
+
+XLSX
+ed.head()
+
+
+ed.info()
+
+
+ed.describe()
+
+
+JSON
+json_data.head()
+
+
+json_data.info()
+
+
+json_data.describe()
+
+
+CSV
+csv.dropna()
+
+
+csv.drop_duplicates()
+
+
+XLSX
+ed.dropna()
+
+
+ed.drop_duplicates()
+
+
+JSON
+json_data.dropna()
+
+
+json_data.drop_duplicates()
+
+
+unified_data = pd.concat([csv, ed, json_data], ignore_index=True)
+
+
+total_sales = unified_data['Sales'].sum()
+print('Total Sales:',total_sales)
+
+
+plt.figure(figsize=(10, 6))
+sales_by_category = json_data.groupby('Category')['Sales'].sum()
+sales_by_category.plot(kind='bar')
+plt.title('Sales by Category')
+plt.xlabel('Product Category')
+plt.ylabel('Total Sales')
+plt.show()
