@@ -1,0 +1,41 @@
+import numpy as np
+import pandas as pd
+from pgmpy.models import BayesianNetwork
+from pgmpy.estimators import MaximumLikelihoodEstimator 
+from pgmpy.inference import VariableElimination
+
+
+heartDisease = pd.read_csv('heart.csv') 
+heartDisease = heartDisease.replace('?', np.nan)
+print(f"Few examples from the dataset are given below : \n\n{heartDisease.head()}")
+
+
+model = BayesianNetwork([
+    ('age', 'trestbps'),
+    ('age', 'fbs'),
+    ('sex', 'trestbps'),
+    ('exang', 'trestbps'),
+    ('trestbps', 'target'),  # Changed from 'heartdisease' to 'target'
+    ('fbs', 'target'),        # Changed from 'heartdisease' to 'target'
+    ('target', 'restecg'),   # Changed from 'heartdisease' to 'target'
+    ('target', 'thalach'),    # Changed from 'heartdisease' to 'target'
+    ('target', 'chol')        # Changed from 'heartdisease' to 'target'
+])
+
+
+print('\nLearning CPD using Maximum likelihood estimators')
+model.fit(heartDisease, estimator=MaximumLikelihoodEstimator)
+
+
+print('Inferencing with Bayesian Network:') 
+HeartDisease_infer = VariableElimination(model)
+
+
+print('1. Probability of Heart Disease given Age=38') 
+q = HeartDisease_infer.query(variables=['target'], evidence={'age': 38})  # Changed 'heartdisease' to 'target'
+print(q)
+
+
+print('\n2. Probability of Heart Disease given cholesterol=230') 
+q = HeartDisease_infer.query(variables=['target'], evidence={'chol': 230})  # Changed 'heartdisease' to 'target'
+print(q)
