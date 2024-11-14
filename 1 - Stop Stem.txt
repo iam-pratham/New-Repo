@@ -1,0 +1,48 @@
+import io
+import nltk
+from nltk.corpus import stopwords
+nltk.download('stopwords')
+
+
+stop_words = set(stopwords.words('english'))
+
+
+file1 = open("sample.txt")
+line = file1.read()
+words = line.split()
+print(f"Before Removing Stop Words : \n{words}\nLength : {len(words)}")
+
+
+for r in words:
+    if not r in stop_words:
+        appendFile = open('output_filteredtext.txt','a')
+        appendFile.write(" "+r)
+        appendFile.close()
+
+
+file2 = open("output_filteredtext.txt")
+line2 = file2.read()
+words = line2.split()
+print(f"After Removing Stop Words : \n{words}\nLength : {len(words)}")
+
+
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer
+nltk.download('punkt_tab')
+
+
+ps = PorterStemmer()
+
+sample = ['program', 'programmer', 'programming', 'programs', 'programmers']
+for s in sample:
+    print(f"{s} : {ps.stem(s)}")
+
+
+from nltk.tokenize import word_tokenize
+sentence = "Programmers program with different programming languages"
+words = word_tokenize(sentence)
+print(words)
+
+
+for w in words:
+    print(f"{w} : {ps.stem(w)}")
